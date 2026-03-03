@@ -7,6 +7,7 @@ import {
   Scripts,
   Link,
 } from "@tanstack/react-router";
+import { Car } from "lucide-react";
 
 import "~/app.css";
 
@@ -28,6 +29,19 @@ export const Route = createRootRoute({
       {
         rel: "icon",
         href: "/favicon.ico",
+      },
+      {
+        rel: "preconnect",
+        href: "https://fonts.googleapis.com",
+      },
+      {
+        rel: "preconnect",
+        href: "https://fonts.gstatic.com",
+        crossOrigin: "anonymous" as any,
+      },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap",
       },
     ],
   }),
@@ -57,7 +71,10 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
       <head>
         <HeadContent />
       </head>
-      <body className="min-h-screen bg-background font-sans antialiased">
+      <body
+        className="min-h-screen bg-background antialiased"
+        style={{ fontFamily: "'Montserrat', sans-serif" }}
+      >
         <div className="relative flex min-h-screen flex-col">
           <SiteHeader />
           <main className="flex-1">{children}</main>
@@ -71,42 +88,40 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
 function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
-      <div className="container mx-auto flex h-14 items-center px-4">
-        <Link to="/" className="mr-6 flex items-center space-x-2">
-          <span className="text-lg font-bold">Drift247</span>
+      <div className="container mx-auto flex h-16 items-center justify-between px-4 lg:px-6">
+        <Link to="/" className="flex items-center space-x-2">
+          <Car className="w-6 h-6 text-[#003366]" />
+          <span className="text-xl font-bold">Drift247</span>
         </Link>
-        <nav className="flex items-center gap-6 text-sm">
+        <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
           <Link
             to="/"
-            className="text-muted-foreground transition-colors hover:text-foreground [&.active]:text-foreground [&.active]:font-medium"
+            hash="how-it-works"
+            className="text-muted-foreground transition-colors hover:text-foreground"
           >
-            Home
+            How It Works
           </Link>
           <Link
-            to="/about"
-            className="text-muted-foreground transition-colors hover:text-foreground [&.active]:text-foreground [&.active]:font-medium"
+            to="/"
+            hash="security"
+            className="text-muted-foreground transition-colors hover:text-foreground"
           >
-            About
+            Security
           </Link>
           <Link
-            to="/dashboard"
-            className="text-muted-foreground transition-colors hover:text-foreground [&.active]:text-foreground [&.active]:font-medium"
+            to="/"
+            hash="drivers"
+            className="text-muted-foreground transition-colors hover:text-foreground"
           >
-            Dashboard
+            Drivers
           </Link>
         </nav>
-        <div className="ml-auto flex items-center gap-2">
+        <div className="flex items-center gap-2">
           <Link
-            to="/auth/login"
-            className="inline-flex h-9 items-center justify-center rounded-md px-4 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+            to="/"
+            className="inline-flex h-10 items-center justify-center rounded-lg bg-[#003366] px-6 text-sm font-semibold text-white shadow transition-colors hover:bg-[#002244]"
           >
-            Login
-          </Link>
-          <Link
-            to="/auth/register"
-            className="inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90"
-          >
-            Sign Up
+            Join Waitlist
           </Link>
         </div>
       </div>
