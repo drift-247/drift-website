@@ -7,44 +7,110 @@ import {
   Scripts,
   Link,
 } from "@tanstack/react-router";
-import { Car } from "lucide-react";
+import { SiteHeader } from "~/components/landing/SiteHeader";
+import { getMetadata } from "~/lib/meta";
+
+// import { Car } from "lucide-react";
 
 import "~/app.css";
 
 export const Route = createRootRoute({
-  head: () => ({
-    meta: [
-      {
-        charSet: "utf-8",
-      },
-      {
-        name: "viewport",
-        content: "width=device-width, initial-scale=1",
-      },
-      {
-        title: "Drift247",
-      },
-    ],
-    links: [
-      {
-        rel: "icon",
-        href: "/favicon.ico",
-      },
-      {
-        rel: "preconnect",
-        href: "https://fonts.googleapis.com",
-      },
-      {
-        rel: "preconnect",
-        href: "https://fonts.gstatic.com",
-        crossOrigin: "anonymous" as any,
-      },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap",
-      },
-    ],
-  }),
+  head: () => {
+    const metadata = getMetadata({
+      title: "Explore the World of Drifting with Drift247",
+      description: "Welcome to Drift247, your ultimate car enthusiast hub!",
+      keywords: ["drift247", "car enthusiasts", "drifting", "automotive news"],
+    });
+    return {
+      meta: [
+        {
+          charSet: "utf-8",
+        },
+        {
+          name: "viewport",
+          content: "width=device-width, initial-scale=1",
+        },
+        {
+          title: metadata.title,
+        },
+        {
+          name: "description",
+          content: metadata.description,
+        },
+        {
+          name: "keywords",
+          content: metadata.keywords,
+        },
+        {
+          property: "og:title",
+          content: metadata.openGraph?.title,
+        },
+        {
+          property: "og:description",
+          content: metadata.openGraph?.description,
+        },
+        {
+          property: "og:type",
+          content: metadata.openGraph?.type,
+        },
+        {
+          property: "og:url",
+          content: metadata.openGraph?.url,
+        },
+        {
+          property: "og:image",
+          content: metadata.openGraph?.images?.[0]?.url,
+        },
+        {
+          name: "twitter:card",
+          content: metadata.twitter?.card,
+        },
+        {
+          name: "twitter:title",
+          content: metadata.twitter?.title,
+        },
+        {
+          name: "twitter:description",
+          content: metadata.twitter?.description,
+        },
+        {
+          name: "twitter:creator",
+          content: metadata.twitter?.creator,
+        },
+        {
+          name: "twitter:image",
+          content: metadata.twitter?.images?.[0],
+        },
+        {
+          name: "robots",
+          content: `${metadata.robots?.index ? "index" : "noindex"}, ${metadata.robots?.follow ? "follow" : "nofollow"}`,
+        },
+      ],
+      links: [
+        {
+          rel: "canonical",
+          href: metadata.alternates?.canonical,
+        },
+        {
+          rel: "icon",
+          href: "/favicon.ico",
+        },
+        {
+          rel: "preconnect",
+          href: "https://fonts.googleapis.com",
+        },
+        {
+          rel: "preconnect",
+          href: "https://fonts.gstatic.com",
+          crossOrigin: "anonymous" as any,
+        },
+        {
+          rel: "stylesheet",
+          href: "https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap",
+        },
+      ],
+    };
+  },
   component: RootComponent,
   notFoundComponent: () => (
     <div className="flex min-h-[60vh] flex-col items-center justify-center gap-4">
@@ -67,7 +133,11 @@ function RootComponent() {
 
 function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      style={{ scrollBehavior: "smooth", scrollPaddingTop: "80px" }}
+    >
       <head>
         <HeadContent />
       </head>
@@ -82,49 +152,5 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
         <Scripts />
       </body>
     </html>
-  );
-}
-
-function SiteHeader() {
-  return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4 lg:px-6">
-        <Link to="/" className="flex items-center space-x-2">
-          <Car className="w-6 h-6 text-[#003366]" />
-          <span className="text-xl font-bold">Drift247</span>
-        </Link>
-        <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
-          <Link
-            to="/"
-            hash="how-it-works"
-            className="text-muted-foreground transition-colors hover:text-foreground"
-          >
-            How It Works
-          </Link>
-          <Link
-            to="/"
-            hash="security"
-            className="text-muted-foreground transition-colors hover:text-foreground"
-          >
-            Security
-          </Link>
-          <Link
-            to="/"
-            hash="drivers"
-            className="text-muted-foreground transition-colors hover:text-foreground"
-          >
-            Drivers
-          </Link>
-        </nav>
-        <div className="flex items-center gap-2">
-          <Link
-            to="/"
-            className="inline-flex h-10 items-center justify-center rounded-lg bg-[#003366] px-6 text-sm font-semibold text-white shadow transition-colors hover:bg-[#002244]"
-          >
-            Join Waitlist
-          </Link>
-        </div>
-      </div>
-    </header>
   );
 }

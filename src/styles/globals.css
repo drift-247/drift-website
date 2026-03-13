@@ -122,4 +122,16 @@
   body {
     @apply bg-background text-foreground;
   }
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+  }
+}
+
+/* Typewriter cursor color — matches Drift247 brand blue */
+.typewriter-cursor {
+  color: #003366 !important;
+}
+.typewriter-wrapper {
+  display: inline;
 }
