@@ -72,7 +72,7 @@ export default function AppDownloadSection() {
               className="flex items-center gap-2 text-white text-sm font-medium bg-white/10 px-5 py-3 rounded-xl border border-white/20"
             >
               <CheckCircle className="w-4 h-4 text-green-400" />
-              We'll notify you when the app launches!
+              We&apos;ll notify you when the app launches!
             </motion.div>
           ) : (
             <form

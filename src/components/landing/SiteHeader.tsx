@@ -16,95 +16,88 @@ export function SiteHeader() {
   ];
 
   return (
-    <header className="fixed top-0 z-50 w-full border-b border-slate-100/80 bg-white/90 backdrop-blur-lg">
-      <div className="container mx-auto flex h-18 items-center justify-between px-6 lg:px-16">
-
-        {/* Logo: icon + wordmark */}
-        <Link to="/" className="flex items-center group">
-          <img 
-            src="/logo-icon.svg" 
-            alt="Drift247" 
-            className="h-12 w-auto block transition-transform duration-300 group-hover:scale-105"
-         />
+    <header className="fixed inset-x-0 top-0 z-[100] w-full border-b border-slate-200/80 bg-white/95 backdrop-blur-md">
+      <div className="mx-auto flex h-20 w-full max-w-7xl items-center justify-between px-6 lg:px-10">
+        <Link to="/" className="group flex shrink-0 items-center">
+          <img
+            src="/logo-icon.svg"
+            alt="Drift247"
+            className="block h-10 w-auto transition-transform duration-300 group-hover:scale-105"
+          />
           <span
-            className="text-[#22437d] font-bold text-xl tracking-tight"
-            style={{ 
+            className="inline-block text-xl font-bold tracking-tight text-[#22437d]"
+            style={{
               fontFamily: "'Plus Jakarta Sans', sans-serif",
-              marginLeft: "-13px", // Tighter fit for the smaller header scale
+              marginLeft: "-10.2px",
               lineHeight: "1",
-              display: "inline-block"
             }}
           >
             rift247
           </span>
         </Link>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-[#4a5568]">
+        <nav className="hidden items-center gap-8 text-sm font-medium text-[#4a5568] md:flex">
           {navLinks.map(({ label, hash }) => (
-            <Link
+            <a
               key={hash}
-              to="/"
-              hash={hash}
-              className="relative py-1 hover:text-[#22437d] transition-colors duration-200 group"
+              href={`#${hash}`}
+              className="group relative py-1 transition-colors duration-200 hover:text-[#22437d]"
             >
               {label}
-              <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-[#22437d] rounded-full transition-all duration-300 group-hover:w-full" />
-            </Link>
+              <span className="absolute bottom-0 left-0 h-0.5 w-0 rounded-full bg-[#22437d] transition-all duration-300 group-hover:w-full" />
+            </a>
           ))}
         </nav>
 
-        {/* Desktop CTA */}
-        <div className="hidden sm:flex items-center">
+        <div className="hidden items-center sm:flex">
           <WaitlistModal>
             <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
-              className="h-10 items-center justify-center rounded-xl bg-[#22437d] px-7 text-sm font-semibold text-white shadow-md shadow-[#22437d]/20 hover:bg-[#1a3464] transition-colors inline-flex"
+              className="inline-flex h-10 items-center justify-center rounded-xl bg-[#22437d] px-7 text-sm font-semibold text-white shadow-md shadow-[#22437d]/20 transition-colors hover:bg-[#1a3464]"
             >
               Join the Waitlist
             </motion.button>
           </WaitlistModal>
         </div>
 
-        {/* Mobile Menu Button */}
         <button
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden p-2 hover:bg-slate-100 rounded-lg transition-colors"
+          type="button"
+          onClick={() => setMobileMenuOpen((prev) => !prev)}
+          className="rounded-lg p-2 transition-colors hover:bg-slate-100 md:hidden"
           aria-label="Toggle menu"
         >
           {mobileMenuOpen ? (
-            <X className="w-5 h-5 text-[#0f1c2e]" />
+            <X className="h-5 w-5 text-[#0f1c2e]" />
           ) : (
-            <Menu className="w-5 h-5 text-[#0f1c2e]" />
+            <Menu className="h-5 w-5 text-[#0f1c2e]" />
           )}
         </button>
       </div>
 
-      {/* Mobile Navigation */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden border-t border-slate-100 bg-white overflow-hidden"
+            className="overflow-hidden border-t border-slate-100 bg-white md:hidden"
           >
-            <nav className="container mx-auto px-6 py-4 space-y-1">
+            <nav className="mx-auto max-w-7xl space-y-1 px-6 py-4">
               {navLinks.map(({ label, hash }) => (
-                <Link
+                <a
                   key={hash}
-                  to="/"
-                  hash={hash}
-                  className="block py-3 px-4 text-[#4a5568] font-medium hover:bg-[#22437d]/5 hover:text-[#22437d] rounded-lg transition-colors"
+                  href={`#${hash}`}
+                  className="block rounded-lg px-4 py-3 font-medium text-[#4a5568] transition-colors hover:bg-[#22437d]/5 hover:text-[#22437d]"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {label}
-                </Link>
+                </a>
               ))}
-              <div className="pt-3 border-t border-slate-100">
+
+              <div className="border-t border-slate-100 pt-3">
                 <WaitlistModal>
-                  <button className="w-full py-3 px-4 bg-[#22437d] text-white font-semibold rounded-xl hover:bg-[#1a3464] transition-colors text-sm">
+                  <button className="w-full rounded-xl bg-[#22437d] px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#1a3464]">
                     Join the Waitlist
                   </button>
                 </WaitlistModal>

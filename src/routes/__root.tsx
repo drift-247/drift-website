@@ -51,7 +51,7 @@ export const Route = createRootRoute({
       { name: "twitter:card", content: "summary_large_image" },
       {
         name: "twitter:title",
-        content: "Drift247 — Secure Ride Marketplace",
+        content: "Drift247 - Secure Ride Marketplace",
       },
       {
         name: "twitter:description",

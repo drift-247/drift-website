@@ -3,18 +3,12 @@ import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { CheckCircle, Loader2 } from "lucide-react";
 
+const FORM_ID = "1FAIpQLSfuc1OjtfnVk0Xu5xrPHzwmGI398Ty562d4aybB_o1VxMKkCg";
+const FORM_URL = `https://docs.google.com/forms/d/e/${FORM_ID}/formResponse`;
+
 const CITIES = [
-  "Lagos",
-  "Abuja",
-  "Port Harcourt",
-  "Ibadan",
-  "Kano",
-  "Benin City",
-  "Enugu",
-  "Kaduna",
-  "Owerri",
-  "Uyo",
-  "Other",
+  "Lagos", "Abuja", "Port Harcourt", "Ibadan", "Kano",
+  "Benin City", "Enugu", "Kaduna", "Owerri", "Uyo", "Other",
 ];
 
 type UserType = "Rider" | "Driver";
@@ -47,17 +41,46 @@ export default function WaitlistSection() {
     setStatus("submitting");
 
     try {
-      const res = await fetch("https://docs.google.com/forms/d/e/1FAIpQLSfuc1OjtfnVk0Xu5xrPHzwmGI398Ty562d4aybB_o1VxMKkCg/viewform?embedded=true", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, userType }),
+      // Google Forms uses a hidden iframe trick to avoid CORS errors
+      const params = new URLSearchParams({
+        "entry.1951330327": form.fullName,
+        "entry.1683944753": form.email,
+        "entry.896594511": form.phone,
+        "entry.1900182679": userType,
+        "entry.762012381": form.city,
+        "entry.1762554219": "Yes",
       });
-      if (res.ok) {
-        setStatus("success");
-        setForm({ fullName: "", email: "", phone: "", city: "", agree: false });
-      } else {
-        setStatus("error");
-      }
+
+      // Submit via hidden iframe to bypass CORS
+      const iframe = document.createElement("iframe");
+      iframe.name = "hidden_iframe";
+      iframe.style.display = "none";
+      document.body.appendChild(iframe);
+
+      const formEl = document.createElement("form");
+      formEl.method = "POST";
+      formEl.action = FORM_URL;
+      formEl.target = "hidden_iframe";
+
+      params.forEach((value, key) => {
+        const input = document.createElement("input");
+        input.type = "hidden";
+        input.name = key;
+        input.value = value;
+        formEl.appendChild(input);
+      });
+
+      document.body.appendChild(formEl);
+      formEl.submit();
+
+      // Clean up after short delay
+      setTimeout(() => {
+        document.body.removeChild(iframe);
+        document.body.removeChild(formEl);
+      }, 2000);
+
+      setStatus("success");
+      setForm({ fullName: "", email: "", phone: "", city: "", agree: false });
     } catch {
       setStatus("error");
     }
@@ -82,11 +105,12 @@ export default function WaitlistSection() {
               Be Among the First to Experience Drift247
             </h2>
             <p className="text-[#4a5568] text-base">
-              Join our waitlist for early access updates, launch announcements, and exclusive onboarding opportunities.
+              Join our waitlist for early access updates, launch announcements,
+              and exclusive onboarding opportunities.
             </p>
           </div>
 
-          {/* Form Card */}
+          {/* Success State */}
           {status === "success" ? (
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
@@ -98,7 +122,8 @@ export default function WaitlistSection() {
               </div>
               <h3 className="text-xl font-bold text-[#0f1c2e]">You&apos;re on the list!</h3>
               <p className="text-[#4a5568] text-sm max-w-sm">
-                We&apos;ll reach out with early access updates and launch announcements. Welcome to Drift247.
+                We&apos;ll reach out with early access updates and launch
+                announcements. Welcome to Drift247.
               </p>
             </motion.div>
           ) : (
@@ -158,7 +183,7 @@ export default function WaitlistSection() {
                   <label className="text-xs font-semibold text-[#0f1c2e] uppercase tracking-wide">
                     I am a...
                   </label>
-                  <div className="flex gap-2 h-11.5">
+                  <div className="flex gap-2" style={{ height: "46px" }}>
                     {(["Rider", "Driver"] as UserType[]).map((type) => (
                       <button
                         key={type}
@@ -210,10 +235,10 @@ export default function WaitlistSection() {
                 </span>
               </label>
 
-              {/* Error state */}
+              {/* Error */}
               {status === "error" && (
                 <p className="text-red-500 text-sm text-center">
-                  Something went wrong. Please try again.
+                  Something went wrong. Please try again or email us at hello@drift247.africa
                 </p>
               )}
 
@@ -235,7 +260,6 @@ export default function WaitlistSection() {
                 )}
               </motion.button>
 
-              {/* Note */}
               <p className="text-center text-[#4a5568] text-xs">
                 Your information will only be used for launch communications.
               </p>
