@@ -1,27 +1,17 @@
 import { useEffect, useRef } from "react";
-import { CheckCircle2, ShieldCheck, Lock, AlertCircle } from "lucide-react";
+import { CheckCircle2, ShieldCheck } from "lucide-react";
+import { motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const securityPoints = [
-  {
-    title: "Protect user data",
-    description: "Bank-grade encryption and secure authentication protocols",
-  },
-  {
-    title: "Prevent transaction abuse",
-    description: "Advanced fraud detection and real-time monitoring systems",
-  },
-  {
-    title: "Monitor abnormal activity",
-    description: "AI-powered anomaly detection to identify suspicious behavior",
-  },
-  {
-    title: "Maintain transparent financial records",
-    description: "Immutable ledgers for all transactions and wallet movements",
-  },
+
+const securityFeatures = [
+  "Protect user data",
+  "Prevent transaction abuse",
+  "Monitor abnormal activity",
+  "Maintain transparent financial records",
 ];
 
 export default function SecuritySection() {
@@ -30,52 +20,24 @@ export default function SecuritySection() {
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo(
-        ".security-header",
-        { y: 30, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 80%",
-          },
-        },
+        ".security-left",
+        { x: -40, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.8, ease: "power3.out",
+          scrollTrigger: { trigger: sectionRef.current, start: "top 80%" } }
       );
-
+      gsap.fromTo(
+        ".security-right",
+        { x: 40, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.8, ease: "power3.out",
+          scrollTrigger: { trigger: sectionRef.current, start: "top 80%" } }
+      );
       gsap.fromTo(
         ".security-point",
-        { x: -40, opacity: 0 },
-        {
-          x: 0,
-          opacity: 1,
-          duration: 0.6,
-          stagger: 0.12,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 70%",
-          },
-        },
-      );
-
-      gsap.fromTo(
-        ".security-image",
-        { scale: 0.9, opacity: 0 },
-        {
-          scale: 1,
-          opacity: 1,
-          duration: 0.8,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 80%",
-          },
-        },
+        { x: -20, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.5, stagger: 0.1, ease: "power3.out",
+          scrollTrigger: { trigger: sectionRef.current, start: "top 70%" } }
       );
     }, sectionRef);
-
     return () => ctx.revert();
   }, []);
 
@@ -83,90 +45,119 @@ export default function SecuritySection() {
     <section
       ref={sectionRef}
       id="security"
-      className="w-full py-24 md:py-32 bg-white border-t border-slate-100"
+      className="w-full py-24 md:py-32 bg-[#22437d] border-t border-[#1a3464]"
     >
-      <div className="container px-4 md:px-8 mx-auto">
-        <div className="flex flex-col md:flex-row items-center gap-12 lg:gap-20">
-          {/* Left: Images */}
-          <div className="md:w-5/12 flex-shrink-0">
-            <div className="security-image relative flex gap-4">
-              {/* Left Image Stack */}
-              <div className="w-1/2 space-y-4">
-                <div className="rounded-3xl overflow-hidden shadow-xl aspect-square border-4 border-white">
-                  <img
-                    src="https://images.pexels.com/photos/3862630/pexels-photo-3862630.jpeg?auto=compress&cs=tinysrgb&w=600"
-                    alt="Security lock and protection"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              </div>
+      <div className="container px-6 md:px-10 lg:px-16 mx-auto">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
 
-              {/* Right Image Stack */}
-              <div className="w-1/2 space-y-4 mt-12">
-                <div className="rounded-3xl overflow-hidden shadow-xl aspect-square border-4 border-white">
-                  <img
-                    src="https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=600"
-                    alt="Verified and secure transactions"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              </div>
-
-              {/* Security Badge */}
-              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-[#003366] text-white text-xs font-bold px-6 py-3 rounded-full shadow-xl whitespace-nowrap flex items-center gap-2">
-                <Lock className="w-4 h-4" />
-                Bank-Grade Security
-              </div>
+          {/* ── Left: Content ── */}
+          <div className="security-left flex flex-col gap-8">
+            {/* Label */}
+            <div className="flex items-center gap-2.5">
+              <ShieldCheck className="w-4 h-4 text-[#b1c1cc]" strokeWidth={2} />
+              <span className="text-[#b1c1cc] font-semibold uppercase tracking-widest text-xs">
+                Our DNA
+              </span>
             </div>
-          </div>
 
-          {/* Right: Content */}
-          <div className="md:w-7/12">
-            {/* Header */}
-            <div className="security-header mb-10">
-              <div className="flex items-center gap-3 mb-5">
-                <ShieldCheck className="w-6 h-6 text-[#003366]" />
-                <span className="text-[#003366] font-bold uppercase tracking-widest text-xs">
-                  Safety First
-                </span>
-              </div>
-              <h2 className="text-3xl md:text-5xl font-extrabold text-slate-900 mb-6 leading-tight">
-                Engineered With Security in Mind
+            {/* Headline */}
+            <div>
+              <h2 className="text-3xl md:text-4xl font-bold text-white leading-tight mb-4">
+                Security isn&apos;t a feature—it&apos;s the foundation.
               </h2>
-              <p className="text-lg text-slate-600 leading-relaxed">
-                Drift247 is built with layered security and wallet risk controls
-                designed to protect every member of our community.
+              <p className="text-[#b1c1cc] text-base leading-relaxed">
+                Drift247 is built with layered security and wallet risk controls designed to:
               </p>
             </div>
 
-            {/* Security Pillars */}
-            <div className="space-y-5 mb-10">
-              {securityPoints.map((point, idx) => (
-                <div key={idx} className="security-point flex gap-4 group">
-                  <div className="flex-shrink-0 mt-1">
-                    <div className="w-8 h-8 rounded-full bg-[#003366]/10 flex items-center justify-center group-hover:bg-[#003366] transition-colors duration-300">
-                      <CheckCircle2 className="w-5 h-5 text-[#003366] group-hover:text-white transition-colors duration-300" />
-                    </div>
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="font-bold text-slate-900 mb-1 group-hover:text-[#003366] transition-colors">
-                      {point.title}
-                    </h4>
-                    <p className="text-slate-600 text-sm leading-relaxed">
-                      {point.description}
-                    </p>
-                  </div>
+            {/* Security feature pills */}
+            <div className="grid grid-cols-2 gap-3">
+              {securityFeatures.map((feature) => (
+                <div
+                  key={feature}
+                  className="flex items-center gap-2 text-white text-sm"
+                >
+                  <CheckCircle2 className="w-4 h-4 text-[#b1c1cc] shrink-0" strokeWidth={2} />
+                  <span>{feature}</span>
                 </div>
               ))}
             </div>
 
-            {/* Closing Statement */}
-            <div className="mt-10 pt-8 border-t border-slate-200">
-              <p className="text-lg font-bold text-slate-900 italic">
-                "Security isn't a feature. It's our foundation."
+            {/* Closing statement */}
+            <div className="pt-6 border-t border-white/10">
+              <p className="text-white/60 text-sm italic">
+                &quot;Security isn&apos;t a feature. It&apos;s our foundation.&quot;
               </p>
             </div>
           </div>
+
+          {/* ── Right: Shield Panel ── */}
+          <div className="security-right flex justify-center lg:justify-end">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, ease: "easeOut" }}
+              className="relative w-full max-w-sm aspect-square rounded-2xl bg-[#1a3464] border border-white/10 flex items-center justify-center overflow-hidden"
+            >
+              {/* Background rings */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-72 h-72 rounded-full border border-white/5" />
+              </div>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-52 h-52 rounded-full border border-white/8" />
+              </div>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-36 h-36 rounded-full border border-white/10" />
+              </div>
+
+              {/* Shield SVG */}
+              <div className="relative z-10 flex flex-col items-center gap-4">
+                <svg
+                  width="96"
+                  height="96"
+                  viewBox="0 0 96 96"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M48 8 L80 20 L80 48 C80 64 64 78 48 88 C32 78 16 64 16 48 L16 20 Z"
+                    fill="none"
+                    stroke="white"
+                    strokeWidth="2.5"
+                    strokeOpacity="0.3"
+                  />
+                  <path
+                    d="M48 16 L72 26 L72 48 C72 60 60 72 48 80 C36 72 24 60 24 48 L24 26 Z"
+                    fill="none"
+                    stroke="white"
+                    strokeWidth="2"
+                    strokeOpacity="0.5"
+                  />
+                  <path
+                    d="M48 24 L66 32 L66 48 C66 57 57 66 48 72 C39 66 30 57 30 48 L30 32 Z"
+                    fill="white"
+                    fillOpacity="0.08"
+                    stroke="white"
+                    strokeWidth="1.5"
+                    strokeOpacity="0.7"
+                  />
+                  {/* Lock icon inside shield */}
+                  <rect x="41" y="45" width="14" height="11" rx="2" fill="white" fillOpacity="0.8" />
+                  <path d="M43 45 L43 41 C43 38.2 45.2 36 48 36 C50.8 36 53 38.2 53 41 L53 45" stroke="white" strokeWidth="2" strokeOpacity="0.8" fill="none" />
+                  <circle cx="48" cy="51" r="1.5" fill="#22437d" />
+                </svg>
+
+                <span className="text-white/60 text-xs font-medium tracking-widest uppercase">
+                  Protected
+                </span>
+              </div>
+
+              {/* Corner accent */}
+              <div className="absolute top-4 right-4 w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+            </motion.div>
+          </div>
+
         </div>
       </div>
     </section>

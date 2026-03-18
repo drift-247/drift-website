@@ -1,72 +1,59 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { CheckCircle2, Loader2 } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { WaitlistModal } from "./WaitlistModal";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const VEHICLE_TYPES = ["Car", "Minivan", "Tricycle (Keke)", "Motorcycle (Okada)", "Other"];
+const CITIES = ["Lagos", "Abuja", "Port Harcourt", "Ibadan", "Kano", "Benin City", "Enugu", "Kaduna", "Owerri", "Uyo", "Other"];
+
 const driverBenefits = [
-  "Secure earnings management with transparent wallet tracking",
-  "Clear per-trip payout breakdown with no hidden deductions",
-  "Transparent commission structure that respects your work",
-  "Structured dispute handling and support processes",
-  "Growth opportunities in launch cities with early partner incentives",
+  "Lower platform commissions",
+  "Immediate earnings withdrawal",
+  "Growth opportunities in launch cities",
+  "Structured dispute handling",
 ];
 
 export default function DriverSection() {
-  const sectionRef = useRef<any>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const [form, setForm] = useState({ fullName: "", vehicleType: "", city: "" });
+  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus("submitting");
+    // Replace with your actual endpoint or Google Form URL
+    await new Promise((r) => setTimeout(r, 1200));
+    setStatus("success");
+  };
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo(
-        ".driver-heading",
-        { y: 30, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 80%",
-          },
-        },
+        ".driver-left",
+        { x: -40, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.8, ease: "power3.out",
+          scrollTrigger: { trigger: sectionRef.current, start: "top 80%" } }
       );
-
+      gsap.fromTo(
+        ".driver-right",
+        { x: 40, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.8, ease: "power3.out",
+          scrollTrigger: { trigger: sectionRef.current, start: "top 80%" } }
+      );
       gsap.fromTo(
         ".driver-benefit",
-        { x: -40, opacity: 0 },
-        {
-          x: 0,
-          opacity: 1,
-          duration: 0.6,
-          stagger: 0.1,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 70%",
-          },
-        },
-      );
-
-      gsap.fromTo(
-        ".driver-image",
-        { scale: 0.9, opacity: 0 },
-        {
-          scale: 1,
-          opacity: 1,
-          duration: 0.8,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 80%",
-          },
-        },
+        { x: -20, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.5, stagger: 0.1, ease: "power3.out",
+          scrollTrigger: { trigger: sectionRef.current, start: "top 70%" } }
       );
     }, sectionRef);
-
     return () => ctx.revert();
   }, []);
 
@@ -74,77 +61,136 @@ export default function DriverSection() {
     <section
       ref={sectionRef}
       id="drivers"
-      className="w-full py-24 md:py-32 bg-white border-t border-slate-100"
+      className="w-full py-24 md:py-32 bg-white border-t border-[#b1c1cc]/30"
     >
-      <div className="container px-4 md:px-8 mx-auto">
-        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
-          {/* Left: Content */}
-          <div className="flex-1 w-full lg:max-w-xl order-2 lg:order-1">
-            <div className="driver-heading space-y-6 mb-10">
-              <h2 className="text-3xl md:text-5xl font-extrabold text-slate-900 leading-tight">
-                Drive With Confidence
+      <div className="container px-6 md:px-10 lg:px-16 mx-auto">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+
+          {/* ── Left: Content ── */}
+          <div className="driver-left flex flex-col gap-7">
+            <div>
+              <h2 className="text-3xl md:text-4xl font-bold text-[#22437d] mb-3 leading-tight">
+                Drive with Drift247
               </h2>
-              <p className="text-lg text-slate-600 leading-relaxed">
-                Join a platform that respects your profession and protects your
-                earnings. Drift247 is built for drivers who value transparency,
-                fairness, and security.
+              <p className="text-[#4a5568] text-base leading-relaxed">
+                Join the community of elite professional drivers. We offer better
+                rates, superior safety, and instant payouts.
               </p>
             </div>
 
-            {/* Benefits List */}
-            <div className="space-y-4 mb-12">
+            {/* Benefits */}
+            <div className="space-y-3.5">
               {driverBenefits.map((benefit, idx) => (
-                <div
-                  key={idx}
-                  className="driver-benefit flex items-start gap-4 group"
-                >
-                  <div className="flex-shrink-0 mt-1">
-                    <div className="w-6 h-6 rounded-full bg-[#003366]/20 flex items-center justify-center group-hover:bg-[#003366] transition-colors duration-300">
-                      <CheckCircle2 className="w-4 h-4 text-[#003366] group-hover:text-white transition-colors duration-300" />
-                    </div>
-                  </div>
-                  <p className="text-slate-700 font-medium group-hover:text-slate-900 transition-colors">
-                    {benefit}
-                  </p>
+                <div key={idx} className="driver-benefit flex items-center gap-3 group">
+                  <CheckCircle2 className="w-4 h-4 text-[#22437d] shrink-0" strokeWidth={2} />
+                  <p className="text-[#0f1c2e] text-sm font-medium">{benefit}</p>
                 </div>
               ))}
             </div>
 
-            {/* CTA Button */}
-            <WaitlistModal>
-              <motion.button
-                whileHover={{ scale: 1.04, y: -2 }}
-                whileTap={{ scale: 0.96 }}
-                className="inline-flex items-center justify-center gap-2 font-bold rounded-full px-8 h-14 text-base transition-all bg-[#003366] text-white shadow-lg shadow-[#003366]/20 hover:bg-[#002244]"
-              >
-                Apply as a Driver <ArrowRight className="w-4 h-4" />
-              </motion.button>
-            </WaitlistModal>
+            {/* CEO Quote */}
+            <div className="bg-[#f7f9fb] border border-[#b1c1cc]/40 rounded-xl p-5">
+              <p className="text-[#0f1c2e] text-sm italic leading-relaxed">
+                &quot;We built Drift247 because drivers deserve to be paid fairly and
+                on time - and riders deserve to feel safe every single trip.
+                Trust isn&apos;t a feature, it&apos;s the foundation.&quot;
+              </p>
+              <p className="text-[#22437d] text-xs font-semibold mt-2">— Founder & CEO, Drift247</p>
+            </div>
           </div>
 
-          {/* Right: Image */}
-          <div className="flex-1 w-full relative order-1 lg:order-2">
-            <div className="driver-image relative rounded-3xl overflow-hidden shadow-2xl aspect-[4/5] max-h-[600px]">
-              <img
-                src="https://images.pexels.com/photos/3808517/pexels-photo-3808517.jpeg?auto=compress&cs=tinysrgb&w=800"
-                alt="Confident driver with Drift247"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 via-transparent to-transparent" />
+          {/* ── Right: Application Form ── */}
+          <div className="driver-right">
+            <div className="bg-white border border-[#b1c1cc]/50 rounded-2xl p-8 shadow-sm">
+              <h3 className="text-lg font-bold text-[#0f1c2e] mb-6">
+                Driver Application
+              </h3>
 
-              {/* Quote Overlay */}
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-slate-900 to-transparent p-8 text-white">
-                <p className="font-bold text-xl mb-2">
-                  "Finally, a platform that listens."
-                </p>
-                <p className="text-white/80 text-sm font-medium">
-                  — Early Driver Partner
-                </p>
-              </div>
+              {status === "success" ? (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="flex flex-col items-center gap-3 py-8 text-center"
+                >
+                  <div className="w-14 h-14 rounded-full bg-green-50 flex items-center justify-center">
+                    <CheckCircle2 className="w-7 h-7 text-green-500" />
+                  </div>
+                  <p className="font-bold text-[#0f1c2e]">Application received!</p>
+                  <p className="text-[#4a5568] text-sm">We'll be in touch soon.</p>
+                </motion.div>
+              ) : (
+                <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                  {/* Full Name */}
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-xs font-semibold text-[#0f1c2e] uppercase tracking-wide">
+                      Full Name
+                    </label>
+                    <input
+                      type="text"
+                      name="fullName"
+                      value={form.fullName}
+                      onChange={handleChange}
+                      placeholder="John Doe"
+                      required
+                      className="w-full border border-[#b1c1cc]/60 rounded-lg px-4 py-3 text-sm text-[#0f1c2e] placeholder:text-[#4a5568]/50 focus:outline-none focus:border-[#22437d] focus:ring-2 focus:ring-[#22437d]/10 transition-all"
+                    />
+                  </div>
+
+                  {/* Vehicle Type */}
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-xs font-semibold text-[#0f1c2e] uppercase tracking-wide">
+                      Vehicle Type
+                    </label>
+                    <select
+                      name="vehicleType"
+                      value={form.vehicleType}
+                      onChange={handleChange}
+                      required
+                      className="w-full border border-[#b1c1cc]/60 rounded-lg px-4 py-3 text-sm text-[#0f1c2e] focus:outline-none focus:border-[#22437d] focus:ring-2 focus:ring-[#22437d]/10 transition-all bg-white"
+                    >
+                      <option value="" disabled>Sedan</option>
+                      {VEHICLE_TYPES.map((v) => (
+                        <option key={v} value={v}>{v}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* City */}
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-xs font-semibold text-[#0f1c2e] uppercase tracking-wide">
+                      City
+                    </label>
+                    <select
+                      name="city"
+                      value={form.city}
+                      onChange={handleChange}
+                      required
+                      className="w-full border border-[#b1c1cc]/60 rounded-lg px-4 py-3 text-sm text-[#0f1c2e] focus:outline-none focus:border-[#22437d] focus:ring-2 focus:ring-[#22437d]/10 transition-all bg-white"
+                    >
+                      <option value="" disabled>Lagos</option>
+                      {CITIES.map((c) => (
+                        <option key={c} value={c}>{c}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Submit */}
+                  <motion.button
+                    type="submit"
+                    disabled={status === "submitting"}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full py-3.5 bg-[#22437d] text-white font-semibold rounded-xl text-sm hover:bg-[#1a3464] transition-all duration-300 mt-2 flex items-center justify-center gap-2 shadow-md shadow-[#22437d]/20"
+                  >
+                    {status === "submitting" ? (
+                      <><Loader2 className="w-4 h-4 animate-spin" /> Submitting...</>
+                    ) : (
+                      "Start Application"
+                    )}
+                  </motion.button>
+                </form>
+              )}
             </div>
-
-            {/* Decorative Background */}
-            <div className="absolute -z-10 -right-8 -bottom-8 w-72 h-72 bg-blue-100/40 rounded-full blur-3xl pointer-events-none" />
           </div>
         </div>
       </div>

@@ -1,87 +1,20 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import gsap from "gsap";
 
 export function PageLoader({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const archRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Prevent ANY scroll while loader is active
     document.body.style.overflow = "hidden";
-    document.documentElement.style.overflow = "hidden";
-
-    let pageLoaded = false;
-    let timerDone = false;
-    let animationStarted = false;
-
-    const exitAnimation = () => {
-      if (animationStarted) return;
-      animationStarted = true;
-
-      const tl = gsap.timeline({
-        onComplete: () => {
-          document.body.style.overflow = "";
-          document.documentElement.style.overflow = "";
-          setIsLoading(false);
-        },
-      });
-
-      // 1. Fade logo out
-      tl.to(".loader-logo", {
-        opacity: 0,
-        y: -40,
-        duration: 0.5,
-        ease: "power2.in",
-      })
-        // 2. Collapse the arch (shrink height → 0)
-        .to(
-          archRef.current,
-          { height: 0, duration: 1.0, ease: "power4.inOut" },
-          "-=0.2",
-        )
-        // 3. Slide entire loader panel up off screen
-        .to(
-          containerRef.current,
-          { y: "-100%", duration: 1.2, ease: "power4.inOut" },
-          "<",
-        )
-        // 4. Reveal page content with subtle parallax lift
-        .fromTo(
-          contentRef.current,
-          { y: 60, opacity: 0.7 },
-          { y: 0, opacity: 1, duration: 1.2, ease: "power4.inOut" },
-          "<",
-        );
-    };
-
-    const tryExit = () => {
-      if (pageLoaded && timerDone) exitAnimation();
-    };
-
-    const handleLoad = () => {
-      pageLoaded = true;
-      tryExit();
-    };
 
     const timer = setTimeout(() => {
-      timerDone = true;
-      tryExit();
-    }, 4000);
-
-    if (document.readyState === "complete") {
-      handleLoad();
-    } else {
-      window.addEventListener("load", handleLoad);
-    }
+      setIsLoading(false);
+      document.body.style.overflow = "";
+    }, 1800);
 
     return () => {
-      window.removeEventListener("load", handleLoad);
       clearTimeout(timer);
       document.body.style.overflow = "";
-      document.documentElement.style.overflow = "";
     };
   }, []);
 
@@ -89,75 +22,57 @@ export function PageLoader({ children }: { children: React.ReactNode }) {
     <>
       <AnimatePresence>
         {isLoading && (
-          <div
-            ref={containerRef}
-            className="fixed inset-0 z-[9999] flex flex-col"
-            // overflow hidden ensures the loader truly covers
-            // the full viewport — no peeking content underneath
-            style={{ overflow: "hidden" }}
+          <motion.div
+            key="loader"
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            className="fixed inset-0 z-[9999] bg-white flex flex-col items-center justify-center gap-8"
           >
-            {/* ── Main blue body ── */}
-            <div className="flex-1 bg-[#003366] flex items-center justify-center">
-              <motion.div
-                initial={{ opacity: 0, y: 20, scale: 0.9 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ duration: 0.7, ease: "easeOut" }}
-                className="loader-logo flex flex-col items-center gap-6"
+            {/* Logo: icon + wordmark */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              className="flex items-center"
+            >
+              <img
+                src="/logo-icon.svg"
+                alt="Drift247 icon"
+                className="h-24 w-auto block"
+              />
+              <span
+                className="text-[#22437d] font-bold text-4xl tracking-tight"
+                style={{ 
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  marginLeft: "-26px", // Pulls "rift" into the icon
+                  lineHeight: "1" 
+                }}
               >
-                <img
-                  src="/logo-white.png"
-                  alt="Drift247"
-                  className="w-56 h-auto drop-shadow-2xl"
-                />
-                <div className="flex gap-2">
-                  {[0, 1, 2].map((i) => (
-                    <motion.div
-                      key={i}
-                      animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
-                      transition={{
-                        duration: 1,
-                        repeat: Infinity,
-                        delay: i * 0.2,
-                        ease: "easeInOut",
-                      }}
-                      className="w-2 h-2 bg-white rounded-full"
-                    />
-                  ))}
-                </div>
-              </motion.div>
-            </div>
+                rift247
+              </span>
+            </motion.div>
 
-            {/*
-             * ── Arch ──
-             * A solid blue rectangle with large rounded corners
-             * on the BOTTOM only — making it look like the bottom
-             * of a card, exactly like the reference image:
-             *
-             *   ─────────────────────────────────────────
-             *   │  (blue, connects flush to body above)  │
-             *   │                                        │
-             *   ╰────────────────────────────────────────╯
-             *       rounded bottom-left                rounded bottom-right
-             *
-             * GSAP shrinks this height from 160px → 0 during exit,
-             * "pulling" the rounded edge up before the whole panel slides off.
-             */}
-            <div
-              ref={archRef}
-              className="w-full bg-[#003366] shrink-0"
-              style={{
-                height: "160px",
-                borderBottomLeftRadius: "80px",
-                borderBottomRightRadius: "80px",
-              }}
-            />
-          </div>
+            {/* Thin progress bar */}
+            <div className="w-40 h-0.5 bg-[#b1c1cc]/40 rounded-full overflow-hidden">
+              <motion.div
+                className="h-full bg-[#22437d] rounded-full"
+                initial={{ width: "0%" }}
+                animate={{ width: "100%" }}
+                transition={{ duration: 1.6, ease: "easeInOut" }}
+              />
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
 
-      <div ref={contentRef} className="relative">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isLoading ? 0 : 1 }}
+        transition={{ duration: 0.4, delay: 0.1 }}
+      >
         {children}
-      </div>
+      </motion.div>
     </>
   );
 }

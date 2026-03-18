@@ -3,314 +3,196 @@ import { motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { WaitlistModal } from "./WaitlistModal";
-import { Car, ShoppingBag, Users, Zap } from "lucide-react";
+import { Shield, Users, CreditCard, ShieldCheck } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const services = [
-  {
-    id: "rides",
-    name: "Rides",
-    icon: Car,
-    description: "Get from A to B safely and affordably",
-    color: "from-blue-500 to-blue-600",
-    iconBg: "bg-blue-100",
-    iconColor: "text-blue-600",
-  },
-  {
-    id: "delivery",
-    name: "Delivery",
-    icon: ShoppingBag,
-    description: "Fresh groceries and packages delivered",
-    color: "from-green-500 to-green-600",
-    iconBg: "bg-green-100",
-    iconColor: "text-green-600",
-  },
-  {
-    id: "carshare",
-    name: "Car-Sharing",
-    icon: Users,
-    description: "Share rides and save on costs",
-    color: "from-purple-500 to-purple-600",
-    iconBg: "bg-purple-100",
-    iconColor: "text-purple-600",
-  },
-  {
-    id: "parcel",
-    name: "Fast Parcel",
-    icon: Zap,
-    description: "Quick and reliable delivery service",
-    color: "from-orange-500 to-orange-600",
-    iconBg: "bg-orange-100",
-    iconColor: "text-orange-600",
-  },
+const trustIndicators = [
+  { icon: Shield, label: "Secure Wallet" },
+  { icon: Users, label: "Verified Users" },
+  { icon: CreditCard, label: "Transparent Pricing" },
+  { icon: ShieldCheck, label: "Built-In Safety" },
 ];
 
 export default function HeroSection() {
   const heroRef = useRef<HTMLElement>(null);
-  const imageRef = useRef<HTMLDivElement>(null);
-  const servicesRef = useRef<HTMLElement>(null);
+  const carRef = useRef<SVGGElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // ── Hero Text Entrance Animations ──────────────────────────────
-      gsap.fromTo(
-        ".hero-headline",
-        { y: 40, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.9,
-          ease: "power4.out",
-          delay: 0.2,
-        },
+      gsap.fromTo(".hero-badge", { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.6, ease: "power3.out", delay: 0.1 });
+      gsap.fromTo(".hero-headline", { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, ease: "power4.out", delay: 0.25 });
+      gsap.fromTo(".hero-sub", { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, ease: "power3.out", delay: 0.4 });
+      gsap.fromTo(".hero-body", { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.7, ease: "power3.out", delay: 0.5 });
+      gsap.fromTo(".hero-buttons", { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.7, ease: "power3.out", delay: 0.6 });
+      gsap.fromTo(".trust-indicators", { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.7, ease: "power3.out", delay: 0.75 });
+      gsap.fromTo(".hero-image-panel", { scale: 0.96, opacity: 0, x: 30 },
+        { scale: 1, opacity: 1, x: 0, duration: 1.1, ease: "expo.out", delay: 0.2 });
+
+      // Car drives in from bottom
+      gsap.fromTo(".road-car",
+        { attr: { transform: "translate(258, 620)" }, opacity: 0 },
+        { attr: { transform: "translate(258, 460)" }, opacity: 1, duration: 1.6, ease: "power2.out", delay: 1.0 }
       );
 
-      gsap.fromTo(
-        ".hero-subheading",
-        { y: 40, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.9,
-          ease: "power4.out",
-          delay: 0.35,
-        },
-      );
-
-      gsap.fromTo(
-        ".hero-buttons",
-        { y: 40, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.9,
-          ease: "power4.out",
-          delay: 0.5,
-        },
-      );
-
-      // ── Hero Image Entrance & Parallax ────────────────────────────────
-      gsap.fromTo(
-        ".hero-image",
-        { scale: 0.95, opacity: 0 },
-        {
-          scale: 1,
-          opacity: 1,
-          duration: 1.2,
-          ease: "expo.out",
-          delay: 0.1,
-        },
-      );
-
-      // Parallax effect on scroll
-      gsap.to(".hero-image", {
+      // Subtle parallax on scroll
+      gsap.to(".hero-image-panel", {
         scrollTrigger: {
           trigger: heroRef.current,
           start: "top top",
-          end: "bottom 30%",
+          end: "bottom top",
           scrub: 1.5,
         },
-        y: 80,
+        y: 60,
         ease: "none",
       });
-
-      // ── Services Section Cards Entrance ───────────────────────────────
-      gsap.fromTo(
-        ".service-card",
-        { y: 60, opacity: 0, scale: 0.95 },
-        {
-          y: 0,
-          opacity: 1,
-          scale: 1,
-          duration: 0.8,
-          stagger: 0.15,
-          ease: "back.out(1.2)",
-          scrollTrigger: {
-            trigger: servicesRef.current,
-            start: "top 70%",
-            end: "top 30%",
-            toggleActions: "play none none none",
-          },
-        },
-      );
-
-      // Services section header reveal
-      gsap.fromTo(
-        ".services-header",
-        { y: 30, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: servicesRef.current,
-            start: "top 80%",
-          },
-        },
-      );
     }, heroRef);
-
     return () => ctx.revert();
   }, []);
 
   return (
-    <>
-      {/* ──────────────────────────────────────────────────────────────── */}
-      {/* HERO SECTION */}
-      {/* ──────────────────────────────────────────────────────────────── */}
-      <section
-        ref={heroRef}
-        className="relative w-full bg-white overflow-hidden"
-      >
-        {/* Centered Text Content */}
-        <div className="relative z-10 w-full pt-32 md:pt-40 pb-16 md:pb-24">
-          <div className="container mx-auto px-4 md:px-8 flex flex-col items-center justify-center text-center">
-            {/* Headline */}
-            <h1 className="hero-headline text-5xl md:text-6xl lg:text-7xl font-black text-slate-900 leading-tight tracking-tight max-w-5xl mx-auto">
-              A Smarter, Safer Way to Ride.
+    <section
+      ref={heroRef}
+      className="relative w-full bg-white overflow-hidden min-h-screen flex items-center"
+    >
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_#b1c1cc15_0%,_transparent_60%)] pointer-events-none" />
+
+      <div className="container mx-auto px-6 md:px-10 lg:px-16 py-24 md:py-32">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+
+          {/* ── Left: Text Content ── */}
+          <div className="flex flex-col gap-6 max-w-xl">
+            <div className="hero-badge inline-flex items-center gap-2 w-fit">
+              <span className="inline-flex items-center gap-1.5 bg-[#22437d]/8 text-[#22437d] text-xs font-semibold px-4 py-1.5 rounded-full border border-[#22437d]/20 tracking-wide uppercase">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#22437d] animate-pulse" />
+                Now Launching in Nigeria
+              </span>
+            </div>
+
+            <h1 className="hero-headline text-4xl md:text-5xl lg:text-[3.4rem] font-bold text-[#0f1c2e] leading-[1.1] tracking-tight">
+              A Smarter, Safer
+              <br />
+              <span className="text-[#22437d]">Way to Ride.</span>
             </h1>
 
-            {/* Subheading */}
-            <p className="hero-subheading text-lg md:text-xl text-slate-600 leading-relaxed max-w-2xl mx-auto mt-8 font-medium">
-              Secure payments. Verified identities. Transparent trips — built
-              for trust from the ground up. Drift247 connects riders and drivers
-              through wallet-protected payments and identity-driven safety to
-              create a more reliable ride marketplace experience.
+            <p className="hero-sub text-base md:text-lg font-semibold text-[#0f1c2e] leading-snug">
+              Secure payments. Verified identities. Transparent trips -{" "}
+              <span className="text-[#22437d]">built for trust from the ground up.</span>
             </p>
 
-            {/* CTA Buttons */}
-            <div className="hero-buttons flex flex-col sm:flex-row gap-4 mt-12 justify-center">
+            <p className="hero-body text-[#4a5568] text-base leading-relaxed">
+              Drift247 connects riders and drivers through wallet-protected
+              payments and identity-driven safety to create a more reliable
+              ride marketplace experience.
+            </p>
+
+            <div className="hero-buttons flex flex-col sm:flex-row gap-3 pt-2">
               <WaitlistModal>
                 <motion.button
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="px-8 py-4 bg-[#003366] text-white font-bold rounded-xl text-base shadow-lg shadow-[#003366]/30 hover:bg-[#002244] transition-all duration-300"
+                  whileHover={{ scale: 1.03, y: -2 }}
+                  whileTap={{ scale: 0.97 }}
+                  className="px-8 py-3.5 bg-[#22437d] text-white font-semibold rounded-xl text-sm shadow-lg shadow-[#22437d]/25 hover:bg-[#1a3464] transition-all duration-300"
                 >
-                  Get Drift247
+                  Join the Waitlist
                 </motion.button>
               </WaitlistModal>
 
-              <motion.button
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 bg-slate-100 text-slate-900 font-bold rounded-xl text-base border border-slate-300 hover:bg-slate-200 transition-all duration-300"
+              <motion.a
+                href="#drivers"
+                whileHover={{ scale: 1.03, y: -2 }}
+                whileTap={{ scale: 0.97 }}
+                className="px-8 py-3.5 bg-white text-[#22437d] font-semibold rounded-xl text-sm border-2 border-[#22437d] hover:bg-[#22437d] hover:text-white transition-all duration-300 text-center"
               >
-                Drift247 Delivery
-              </motion.button>
+                Drive with Drift247
+              </motion.a>
+            </div>
+
+            <div className="trust-indicators grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4 border-t border-[#b1c1cc]/40">
+              {trustIndicators.map(({ icon: Icon, label, sub }) => (
+                <div key={label} className="flex flex-col items-center gap-1.5 text-center">
+                  <div className="w-9 h-9 rounded-lg bg-[#22437d]/8 flex items-center justify-center">
+                    <Icon className="w-4 h-4 text-[#22437d]" strokeWidth={1.8} />
+                  </div>
+                  <span className="text-[#0f1c2e] text-xs font-semibold leading-tight">{label}</span>
+                  <span className="text-[#4a5568] text-[10px] leading-tight">{sub}</span>
+                </div>
+              ))}
             </div>
           </div>
-        </div>
 
-        {/* Full-Width Hero Image */}
-        <div ref={imageRef} className="hero-image relative w-full">
-          <div className="relative w-full h-96 md:h-[500px] lg:h-[900px] overflow-hidden">
-            <img
-              src="/generated_.png"
-              alt="Couple by a car"
-              className="w-full h-full object-cover"
-              onError={(e) => {
-                (e.currentTarget as HTMLImageElement).src = "/generated_.png";
-              }}
-            />
-            {/* Overlay Gradient */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
+          {/* ── Right: Road + Car Illustration ── */}
+          <div className="hero-image-panel relative w-full h-[420px] md:h-[520px] lg:h-[580px] rounded-2xl overflow-hidden bg-[#dde8ee]">
+            <svg
+              viewBox="0 0 600 700"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="absolute inset-0 w-full h-full"
+              preserveAspectRatio="xMidYMid slice"
+            >
+              <rect width="600" height="700" fill="#dde8ee" />
+              <line x1="0" y1="280" x2="600" y2="280" stroke="#c5d5dd" strokeWidth="1" />
+
+              {/* Road */}
+              <path d="M 230 700 L 275 280 L 325 280 L 370 700 Z" fill="#3d3d3d" />
+              <path d="M 230 700 L 275 280" stroke="#ffffff" strokeWidth="2.5" strokeOpacity="0.6" />
+              <path d="M 370 700 L 325 280" stroke="#ffffff" strokeWidth="2.5" strokeOpacity="0.6" />
+              <line x1="300" y1="700" x2="300" y2="280" stroke="#ffffff" strokeWidth="3" strokeDasharray="30 20" strokeOpacity="0.9" />
+
+              {/* Road markings */}
+              <path d="M 283 600 L 317 600 L 316 568 L 284 568 Z" fill="#ffffff" fillOpacity="0.7" />
+              <path d="M 287 520 L 313 520 L 312 494 L 288 494 Z" fill="#ffffff" fillOpacity="0.65" />
+              <path d="M 291 440 L 309 440 L 308 419 L 292 419 Z" fill="#ffffff" fillOpacity="0.55" />
+              <path d="M 294 386 L 306 386 L 305 369 L 295 369 Z" fill="#ffffff" fillOpacity="0.45" />
+              <path d="M 296 356 L 304 356 L 304 343 L 296 343 Z" fill="#ffffff" fillOpacity="0.35" />
+
+              {/* ── Car on the road ── */}
+              <g className="road-car" transform="translate(258, 460)">
+                {/* Shadow */}
+                <ellipse cx="42" cy="62" rx="38" ry="6" fill="#000000" fillOpacity="0.15" />
+                {/* Car body */}
+                <rect x="4" y="22" width="76" height="30" rx="5" fill="#22437d" />
+                {/* Cabin/roof */}
+                <path d="M 16 22 L 24 6 L 60 6 L 68 22 Z" fill="#1a3464" />
+                {/* Windshield front */}
+                <path d="M 22 22 L 28 9 L 56 9 L 62 22 Z" fill="#b1c1cc" fillOpacity="0.55" />
+                {/* Windows */}
+                <rect x="26" y="10" width="13" height="8" rx="1.5" fill="#dde8ee" fillOpacity="0.75" />
+                <rect x="45" y="10" width="13" height="8" rx="1.5" fill="#dde8ee" fillOpacity="0.75" />
+                {/* Wheels */}
+                <circle cx="20" cy="52" r="10" fill="#111111" />
+                <circle cx="20" cy="52" r="6" fill="#444444" />
+                <circle cx="20" cy="52" r="2.5" fill="#777777" />
+                <circle cx="64" cy="52" r="10" fill="#111111" />
+                <circle cx="64" cy="52" r="6" fill="#444444" />
+                <circle cx="64" cy="52" r="2.5" fill="#777777" />
+                {/* Headlights */}
+                <rect x="78" y="28" width="5" height="5" rx="1" fill="#fff9c4" fillOpacity="0.95" />
+                <rect x="78" y="36" width="5" height="4" rx="1" fill="#ffecb3" fillOpacity="0.8" />
+                {/* Taillights */}
+                <rect x="1" y="28" width="5" height="5" rx="1" fill="#ff5252" fillOpacity="0.95" />
+                <rect x="1" y="36" width="5" height="4" rx="1" fill="#ff1744" fillOpacity="0.8" />
+                {/* Door divider */}
+                <line x1="42" y1="23" x2="42" y2="50" stroke="#1a3464" strokeWidth="1.5" strokeOpacity="0.6" />
+                {/* Door handles */}
+                <rect x="30" y="34" width="9" height="2.5" rx="1" fill="#b1c1cc" fillOpacity="0.7" />
+                <rect x="46" y="34" width="9" height="2.5" rx="1" fill="#b1c1cc" fillOpacity="0.7" />
+                {/* Drift247 branding stripe */}
+                <rect x="4" y="35" width="76" height="3" rx="1" fill="#b1c1cc" fillOpacity="0.25" />
+              </g>
+            </svg>
+
+            {/* Subtle vignette */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#b1c1cc]/15 via-transparent to-transparent pointer-events-none rounded-2xl" />
           </div>
+
         </div>
-      </section>
-
-      {/* ──────────────────────────────────────────────────────────────── */}
-      {/* OUR SERVICES SECTION */}
-      {/* ──────────────────────────────────────────────────────────────── */}
-      <section
-        ref={servicesRef}
-        className="relative w-full py-20 md:py-28 bg-white"
-      >
-        <div className="container mx-auto px-4 md:px-8">
-          {/* Section Header */}
-          <div className="services-header text-center mb-16 md:mb-24 max-w-3xl mx-auto">
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 mb-6 leading-tight">
-              Our services
-            </h2>
-            <p className="text-lg md:text-xl text-slate-600 leading-relaxed">
-              Everything you need, all in one place. From rides to delivery,
-              Drift247 has you covered.
-            </p>
-          </div>
-
-          {/* Services Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-            {services.map((service) => {
-              const Icon = service.icon;
-              return (
-                <motion.div
-                  key={service.id}
-                  className="service-card group relative"
-                  whileHover={{ y: -8 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <div className="relative h-full bg-gradient-to-br from-slate-50 to-slate-100 rounded-2xl p-8 border border-slate-200 hover:border-slate-300 transition-all duration-300 cursor-pointer overflow-hidden">
-                    {/* Background Gradient Accent */}
-                    <div
-                      className={`absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-br ${service.color} opacity-5 rounded-full blur-2xl group-hover:opacity-10 transition-all duration-500`}
-                    />
-
-                    {/* Content */}
-                    <div className="relative z-10 flex flex-col h-full gap-6">
-                      {/* Icon */}
-                      <div
-                        className={`w-14 h-14 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 ${service.iconBg}`}
-                      >
-                        <Icon className={`w-7 h-7 ${service.iconColor}`} />
-                      </div>
-
-                      {/* Service Name */}
-                      <div>
-                        <h3 className="text-2xl font-black text-slate-900 mb-2">
-                          {service.name}
-                        </h3>
-                        <p className="text-slate-600 font-medium text-sm leading-relaxed">
-                          {service.description}
-                        </p>
-                      </div>
-
-                      {/* Arrow Indicator */}
-                      <div className="mt-auto pt-6 border-t border-slate-200 group-hover:border-slate-300 transition-colors">
-                        <div className="flex items-center gap-2 text-slate-700 font-semibold group-hover:text-[#003366] transition-colors">
-                          <span>Learn more</span>
-                          <motion.svg
-                            className="w-5 h-5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            animate={{ x: [0, 4, 0] }}
-                            transition={{
-                              duration: 2,
-                              repeat: Infinity,
-                              repeatType: "loop",
-                            }}
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M9 5l7 7m0 0l-7 7m7-7H5"
-                            />
-                          </motion.svg>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Hover Border Effect */}
-                    <div className="absolute inset-0 border-2 border-[#003366] rounded-2xl opacity-0 group-hover:opacity-20 transition-opacity duration-300 pointer-events-none" />
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }
