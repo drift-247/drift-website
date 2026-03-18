@@ -1,7 +1,6 @@
 import { lazy, Suspense } from "react";
 import { PageLoader } from "./PageLoader";
 import { SiteHeader } from "./SiteHeader";
-import { Analytics } from "./Analytics";
 
 const HeroSection = lazy(() => import("./HeroSection"));
 const PositioningSection = lazy(() => import("./PositioningSection"));
@@ -43,7 +42,6 @@ export default function Landing() {
             <WaitlistSection />
             <FAQSection />
             <FooterSection />
-            <Analytics />
           </main>
         </Suspense>
       </div>

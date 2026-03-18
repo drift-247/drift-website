@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-router";
 
 import "~/app.css";
+import { Analytics } from "~/components/landing/Analytics";
 
 export const Route = createRootRoute({
   head: () => ({
@@ -83,12 +84,12 @@ export const Route = createRootRoute({
 
   notFoundComponent: () => (
     <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-white">
-      <img src="/logo-icon.svg" alt="Drift247" className="h-12 w-auto mb-4" />
+      <img src="/logo-icon.svg" alt="Drift247" className="mb-4 h-12 w-auto" />
       <h1 className="text-5xl font-bold text-[#0f1c2e]">404</h1>
-      <p className="text-[#4a5568] text-base">Page not found</p>
+      <p className="text-base text-[#4a5568]">Page not found</p>
       <Link
         to="/"
-        className="mt-2 px-6 py-3 bg-[#22437d] text-white text-sm font-semibold rounded-xl hover:bg-[#1a3464] transition-colors"
+        className="mt-2 rounded-xl bg-[#22437d] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#1a3464]"
       >
         Go home
       </Link>
@@ -114,6 +115,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
         className="min-h-screen bg-white antialiased"
         style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
       >
+        <Analytics />
         {children}
         <Scripts />
       </body>
