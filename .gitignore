@@ -33,3 +33,9 @@ yarn-error.log*
 .DS_Store
 *.pem
 routeTree.gen.ts
+
+.nitro
+.vercel
+node_modules
+dist
+.output
