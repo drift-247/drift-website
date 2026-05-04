@@ -59,11 +59,14 @@ export const Route = createRootRoute({
         content:
           "Secure payments. Verified identities. Transparent trips — built for trust from the ground up.",
       },
-      { name: "twitter:image", content: "https://drift247.africa/og-image.png" },
+      {
+        name: "twitter:image",
+        content: "https://drift247.africa/og-image.png",
+      },
       { name: "twitter:creator", content: "@drift247" },
     ],
     links: [
-      { rel: "icon", href: "/logo-icon.svg", type: "image/svg+xml" },
+      { rel: "icon", href: "/logo.png", type: "image/png" },
       { rel: "canonical", href: "https://drift247.africa" },
 
       // ── Plus Jakarta Sans ──
@@ -84,7 +87,7 @@ export const Route = createRootRoute({
 
   notFoundComponent: () => (
     <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-white">
-      <img src="/logo-icon.svg" alt="Drift247" className="mb-4 h-12 w-auto" />
+      <img src="/logo.png" alt="Drift247" className="mb-4 h-12 w-auto" />
       <h1 className="text-5xl font-bold text-[#0f1c2e]">404</h1>
       <p className="text-base text-[#4a5568]">Page not found</p>
       <Link

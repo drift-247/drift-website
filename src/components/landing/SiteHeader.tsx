@@ -20,20 +20,10 @@ export function SiteHeader() {
       <div className="mx-auto flex h-20 w-full max-w-7xl items-center justify-between px-6 lg:px-10">
         <Link to="/" className="group flex shrink-0 items-center">
           <img
-            src="/logo-icon.svg"
+            src="/logo.png"
             alt="Drift247"
             className="block h-10 w-auto transition-transform duration-300 group-hover:scale-105"
           />
-          <span
-            className="inline-block text-xl font-bold tracking-tight text-[#22437d]"
-            style={{
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              marginLeft: "-10.2px",
-              lineHeight: "1",
-            }}
-          >
-            rift247
-          </span>
         </Link>
 
         <nav className="hidden items-center gap-8 text-sm font-medium text-[#4a5568] md:flex">
