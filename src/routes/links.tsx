@@ -3,10 +3,63 @@ import type { ReactNode } from "react";
 
 // ---------------------------------------------------------------------------
 // Drift247 — /links page
-// A single "route" of stops: waitlist, driver application, company, socials.
+// One mobile-first page for waitlist, driver application, website, contact,
+// company, and social links.
 // ---------------------------------------------------------------------------
 
 export const Route = createFileRoute("/links")({
+  head: () => ({
+    meta: [
+      {
+        title: "Drift247 Links - Waitlist, Driver Application & Socials",
+      },
+      {
+        name: "description",
+        content:
+          "Find Drift247 waitlist, driver application, website, social media, contact, and company links in one place.",
+      },
+      {
+        property: "og:title",
+        content: "Drift247 Links",
+      },
+      {
+        property: "og:description",
+        content:
+          "Join the waitlist, apply to drive, visit the Drift247 website, and connect with Drift247 across official channels.",
+      },
+      {
+        property: "og:url",
+        content: "https://drift247.africa/links",
+      },
+      {
+        property: "og:image",
+        content: "https://drift247.africa/og-image.png",
+      },
+      {
+        name: "twitter:card",
+        content: "summary_large_image",
+      },
+      {
+        name: "twitter:title",
+        content: "Drift247 Links",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "Join the waitlist, apply to drive, and connect with Drift247 across official channels.",
+      },
+      {
+        name: "twitter:image",
+        content: "https://drift247.africa/og-image.png",
+      },
+    ],
+    links: [
+      {
+        rel: "canonical",
+        href: "https://drift247.africa/links",
+      },
+    ],
+  }),
   component: LinksPage,
 });
 
@@ -22,6 +75,11 @@ const stops: LinkStop[] = [
     label: "Join the Waitlist",
     href: "https://forms.gle/qVygJd3AeYzLrJwo7",
     variant: "primary",
+  },
+  {
+    label: "Visit Drift247 Website",
+    href: "https://drift247.africa/",
+    variant: "secondary",
   },
   {
     label: "Apply to Drive",
@@ -56,8 +114,22 @@ const socials: { name: string; href: string; icon: ReactNode }[] = [
     href: "https://www.instagram.com/drift247_ng?igsh=a2RjdmVydjQ2aW80",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5">
-        <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" strokeWidth="1.6" />
-        <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="1.6" />
+        <rect
+          x="3"
+          y="3"
+          width="18"
+          height="18"
+          rx="5"
+          stroke="currentColor"
+          strokeWidth="1.6"
+        />
+        <circle
+          cx="12"
+          cy="12"
+          r="4"
+          stroke="currentColor"
+          strokeWidth="1.6"
+        />
         <circle cx="17.2" cy="6.8" r="1" fill="currentColor" />
       </svg>
     ),
@@ -102,12 +174,16 @@ const socials: { name: string; href: string; icon: ReactNode }[] = [
 
 function StopButton({ stop }: { stop: LinkStop }) {
   const base =
-    "relative flex w-full items-center justify-center rounded-xl px-5 py-3.5 text-[15px] font-semibold transition-transform active:scale-[0.98]";
+    "relative flex w-full items-center justify-center rounded-2xl px-5 py-3.5 text-[15px] font-semibold transition-all duration-300 active:scale-[0.98]";
 
   if (stop.variant === "disabled") {
     return (
-      <div className={`${base} cursor-default border border-dashed border-[#0f1c2e]/20 text-[#0f1c2e]/40`}>
+      <div
+        aria-disabled="true"
+        className={`${base} cursor-default border border-dashed border-[#0f1c2e]/20 bg-white/50 text-[#0f1c2e]/40`}
+      >
         {stop.label}
+
         {stop.sublabel && (
           <span className="ml-2 rounded-full bg-[#0f1c2e]/5 px-2 py-0.5 text-[11px] font-medium text-[#0f1c2e]/40">
             {stop.sublabel}
@@ -119,11 +195,18 @@ function StopButton({ stop }: { stop: LinkStop }) {
 
   const styles =
     stop.variant === "primary"
-      ? "bg-[#22437d] text-white shadow-sm hover:bg-[#1b3564]"
-      : "border border-[#22437d]/30 text-[#22437d] hover:bg-[#22437d]/5";
+      ? "bg-[#22437d] text-white shadow-lg shadow-[#22437d]/20 hover:bg-[#1b3564]"
+      : "border border-[#22437d]/20 bg-white/75 text-[#22437d] shadow-sm shadow-[#22437d]/5 hover:border-[#22437d]/35 hover:bg-[#22437d]/[0.06]";
+
+  const isExternal = stop.href?.startsWith("http");
 
   return (
-    <a href={stop.href} target="_blank" rel="noopener noreferrer" className={`${base} ${styles}`}>
+    <a
+      href={stop.href}
+      target={isExternal ? "_blank" : undefined}
+      rel={isExternal ? "noopener noreferrer" : undefined}
+      className={`${base} ${styles}`}
+    >
       {stop.label}
     </a>
   );
@@ -131,44 +214,91 @@ function StopButton({ stop }: { stop: LinkStop }) {
 
 function LinksPage() {
   return (
-    <div className="flex min-h-screen flex-col items-center bg-white px-6 py-16 text-[#0f1c2e]">
-      <div className="flex w-full max-w-sm flex-col items-center">
-        {/* Brand mark */}
-        <div className="mb-1 text-xl font-bold tracking-tight text-[#22437d]">Drift247</div>
-        <p className="mb-10 text-sm text-[#0f1c2e]/60">Safety-first rides, built for Lagos</p>
+    <main className="relative flex min-h-screen flex-col items-center overflow-hidden bg-[#f6f9fc] px-6 py-12 text-[#0f1c2e] sm:py-16">
+      {/* Background accents */}
+      <div className="pointer-events-none absolute -left-24 top-10 h-72 w-72 rounded-full bg-[#d6e4f7]/80 blur-3xl" />
+      <div className="pointer-events-none absolute -right-24 bottom-10 h-80 w-80 rounded-full bg-[#22437d]/[0.08] blur-3xl" />
 
-        {/* Route stack: each link is a stop along a dashed route line */}
-        <div className="relative w-full">
-          <div
-            aria-hidden
-            className="absolute left-0 top-0 bottom-0 -z-10 ml-[calc(50%-0.5px)] border-l border-dashed border-[#22437d]/15"
-          />
-          <div className="flex w-full flex-col gap-3">
-            {stops.map((stop) => (
-              <StopButton key={stop.label} stop={stop} />
-            ))}
-          </div>
+      <div className="relative z-10 flex w-full max-w-sm flex-col items-center">
+        {/* Brand */}
+        <a
+          href="https://drift247.africa/"
+          aria-label="Visit Drift247 website"
+          className="mb-5 flex items-center justify-center"
+        >
+          <img src="/logo-icon.svg" alt="Drift247" className="h-14 w-auto" />
+        </a>
+
+        <div className="mb-8 text-center">
+          <p className="text-2xl font-bold tracking-tight text-[#22437d]">
+            Drift247
+          </p>
+
+          <p className="mt-2 text-sm leading-relaxed text-[#0f1c2e]/60">
+            Customer-first mobility, built for everyday movement.
+          </p>
+
+          <p className="mt-3 text-xs font-bold uppercase tracking-[0.24em] text-[#22437d]/55">
+            Drift in Comfort
+          </p>
         </div>
+
+        {/* Link card */}
+        <section className="w-full rounded-[2rem] border border-[#b1c1cc]/35 bg-white/80 p-4 shadow-2xl shadow-[#22437d]/10 backdrop-blur-md">
+          <div className="mb-4 rounded-2xl bg-[#f6f9fc] px-4 py-3 text-center">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#22437d]">
+              Official Links
+            </p>
+          </div>
+
+          <div className="relative w-full">
+            <div
+              aria-hidden
+              className="absolute bottom-4 top-4 -z-10 ml-[calc(50%-0.5px)] border-l border-dashed border-[#22437d]/15"
+            />
+
+            <div className="flex w-full flex-col gap-3">
+              {stops.map((stop) => (
+                <StopButton key={stop.label} stop={stop} />
+              ))}
+            </div>
+          </div>
+        </section>
 
         {/* Socials */}
-        <div className="mt-10 flex items-center gap-3">
-          {socials.map((s) => (
-            <a
-              key={s.name}
-              href={s.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={s.name}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-[#0f1c2e]/10 text-[#22437d] transition-colors hover:bg-[#22437d]/5"
-            >
-              {s.icon}
-            </a>
-          ))}
-        </div>
+        <section className="mt-8 w-full rounded-[1.75rem] border border-[#b1c1cc]/35 bg-white/70 p-5 shadow-sm shadow-[#22437d]/5 backdrop-blur-sm">
+          <p className="mb-4 text-center text-xs font-bold uppercase tracking-[0.2em] text-[#22437d]">
+            Connect with us
+          </p>
+
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            {socials.map((social) => (
+              <a
+                key={social.name}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={social.name}
+                title={social.name}
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-[#22437d]/15 bg-white text-[#22437d] shadow-sm shadow-[#22437d]/5 transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#22437d] hover:text-white"
+              >
+                {social.icon}
+              </a>
+            ))}
+          </div>
+        </section>
 
         {/* Footer */}
-        <p className="mt-12 text-xs text-[#0f1c2e]/40">Driving Africa Digital Services Limited</p>
+        <footer className="mt-10 text-center">
+          <p className="text-xs text-[#0f1c2e]/45">
+            Driving Africa Digital Services Limited
+          </p>
+
+          <p className="mt-2 text-[11px] text-[#0f1c2e]/35">
+            © {new Date().getFullYear()} Drift247. All rights reserved.
+          </p>
+        </footer>
       </div>
-    </div>
+    </main>
   );
 }

@@ -198,7 +198,7 @@ export default function HeroSection() {
           </div>
 
           {/* Right: Premium Animated Product Visual */}
-          <div className="hero-visual relative mx-auto h-[520px] w-full max-w-xl lg:h-[660px]">
+          <div className="hero-visual relative mx-auto h-[430px] w-full max-w-[390px] sm:h-[500px] sm:max-w-xl lg:h-[660px]">
             {/* Soft background frame */}
             <div className="absolute inset-0 overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#eef5fb] via-white to-[#d6e4f7] shadow-2xl shadow-[#22437d]/10">
               <div className="hero-orb absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[#22437d]/[0.18] blur-3xl" />
@@ -210,7 +210,7 @@ export default function HeroSection() {
             <div className="absolute inset-6 rounded-[1.6rem] border border-white/70 bg-white/20 backdrop-blur-[2px]" />
 
             {/* Main phone mockup */}
-            <div className="main-phone absolute left-1/2 top-1/2 w-[72%] max-w-[340px] -translate-x-1/2 -translate-y-1/2 md:w-[68%] lg:max-w-[380px]">
+            <div className="main-phone absolute left-1/2 top-[56%] w-[70%] max-w-[280px] -translate-x-1/2 -translate-y-1/2 sm:top-1/2 sm:max-w-[340px] md:w-[68%] lg:max-w-[380px]">
               <div className="relative">
                 <div className="absolute inset-8 rounded-full bg-[#22437d]/25 blur-3xl" />
                 <img
@@ -222,7 +222,7 @@ export default function HeroSection() {
             </div>
 
             {/* Floating feature card */}
-            <div className="floating-card absolute bottom-20 left-3 w-[210px] rounded-2xl border border-white/70 bg-white/85 p-4 shadow-xl shadow-[#22437d]/10 backdrop-blur-md md:left-6">
+            <div className="floating-card absolute bottom-14 left-4 w-[230px] rounded-2xl border border-white/70 bg-white/90 p-4 shadow-xl shadow-[#22437d]/10 backdrop-blur-md sm:bottom-20 sm:left-6 sm:w-[210px]">
               <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-[#22437d] text-white">
                 <CarFront className="h-4 w-4" strokeWidth={2} />
               </div>
@@ -235,7 +235,7 @@ export default function HeroSection() {
             </div>
 
             {/* Small top pill */}
-            <div className="floating-card absolute right-5 top-8 rounded-full border border-white/70 bg-white/80 px-4 py-2 text-xs font-semibold text-[#22437d] shadow-lg shadow-[#22437d]/10 backdrop-blur-md">
+            <div className="floating-card absolute right-4 top-6 rounded-full border border-white/70 bg-white/85 px-4 py-2 text-xs font-semibold text-[#22437d] shadow-lg shadow-[#22437d]/10 backdrop-blur-md sm:right-5 sm:top-8">
               Drift247 App Preview
             </div>
           </div>
