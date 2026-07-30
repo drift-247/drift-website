@@ -1,17 +1,41 @@
 import { useEffect, useRef } from "react";
-import { CheckCircle2, ShieldCheck } from "lucide-react";
+import {
+  Activity,
+  CheckCircle2,
+  CreditCard,
+  FileText,
+  LockKeyhole,
+  ShieldCheck,
+} from "lucide-react";
 import { motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const trustFeatures = [
+  "Protect user information",
+  "Support clear ride payment handling",
+  "Flag unusual activity",
+  "Maintain clear trip and earnings records",
+];
 
-const securityFeatures = [
-  "Protect user data",
-  "Prevent transaction abuse",
-  "Monitor abnormal activity",
-  "Maintain transparent financial records",
+const trustLayers = [
+  {
+    icon: ShieldCheck,
+    title: "Verified onboarding",
+    desc: "Structured checks that support a more trusted ride experience.",
+  },
+  {
+    icon: CreditCard,
+    title: "Clear payment handling",
+    desc: "Ride payment processes designed for clarity and confidence.",
+  },
+  {
+    icon: FileText,
+    title: "Clear records",
+    desc: "Trip and payment information users can better understand.",
+  },
 ];
 
 export default function SecuritySection() {
@@ -20,24 +44,77 @@ export default function SecuritySection() {
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo(
-        ".security-left",
-        { x: -40, opacity: 0 },
-        { x: 0, opacity: 1, duration: 0.8, ease: "power3.out",
-          scrollTrigger: { trigger: sectionRef.current, start: "top 80%" } }
+        ".trust-left",
+        { x: -42, opacity: 0 },
+        {
+          x: 0,
+          opacity: 1,
+          duration: 0.85,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 80%",
+          },
+        }
       );
+
       gsap.fromTo(
-        ".security-right",
-        { x: 40, opacity: 0 },
-        { x: 0, opacity: 1, duration: 0.8, ease: "power3.out",
-          scrollTrigger: { trigger: sectionRef.current, start: "top 80%" } }
+        ".trust-right",
+        { x: 42, opacity: 0 },
+        {
+          x: 0,
+          opacity: 1,
+          duration: 0.85,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 80%",
+          },
+        }
       );
+
       gsap.fromTo(
-        ".security-point",
-        { x: -20, opacity: 0 },
-        { x: 0, opacity: 1, duration: 0.5, stagger: 0.1, ease: "power3.out",
-          scrollTrigger: { trigger: sectionRef.current, start: "top 70%" } }
+        ".trust-point",
+        { y: 18, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.5,
+          stagger: 0.09,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 68%",
+          },
+        }
       );
+
+      gsap.fromTo(
+        ".trust-layer-card",
+        { y: 24, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.65,
+          stagger: 0.12,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 68%",
+          },
+        }
+      );
+
+      gsap.to(".trust-orb", {
+        scale: 1.08,
+        opacity: 0.8,
+        duration: 4,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+      });
     }, sectionRef);
+
     return () => ctx.revert();
   }, []);
 
@@ -45,119 +122,135 @@ export default function SecuritySection() {
     <section
       ref={sectionRef}
       id="security"
-      className="w-full py-24 md:py-32 bg-[#22437d] border-t border-[#1a3464]"
+      className="relative w-full overflow-hidden border-t border-[#1a3464] bg-[#22437d] py-24 md:py-32"
     >
-      <div className="container px-6 md:px-10 lg:px-16 mx-auto">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      {/* Background accents */}
+      <div className="pointer-events-none absolute -left-24 top-0 h-80 w-80 rounded-full bg-white/[0.08] blur-3xl" />
+      <div className="trust-orb pointer-events-none absolute -right-24 bottom-0 h-96 w-96 rounded-full bg-[#d6e4f7]/[0.16] blur-3xl" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(255,255,255,0.10)_0%,_transparent_45%)]" />
 
-          {/* ── Left: Content ── */}
-          <div className="security-left flex flex-col gap-8">
-            {/* Label */}
-            <div className="flex items-center gap-2.5">
-              <ShieldCheck className="w-4 h-4 text-[#b1c1cc]" strokeWidth={2} />
-              <span className="text-[#b1c1cc] font-semibold uppercase tracking-widest text-xs">
-                Our DNA
+      <div className="container relative z-10 mx-auto px-6 md:px-10 lg:px-16">
+        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+          {/* Left Content */}
+          <div className="trust-left flex flex-col gap-8">
+            <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/15 bg-white/[0.08] px-4 py-2 backdrop-blur-sm">
+              <ShieldCheck className="h-4 w-4 text-[#d6e4f7]" strokeWidth={2} />
+              <span className="text-xs font-bold uppercase tracking-[0.22em] text-[#d6e4f7]">
+                Built on Trust
               </span>
             </div>
 
-            {/* Headline */}
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-white leading-tight mb-4">
-                Security isn&apos;t a feature—it&apos;s the foundation.
+              <h2 className="max-w-xl text-3xl font-bold leading-tight tracking-tight text-white md:text-4xl lg:text-5xl">
+                Trust is built into every Drift247 experience.
               </h2>
-              <p className="text-[#b1c1cc] text-base leading-relaxed">
-                Drift247 is built with layered security and wallet risk controls designed to:
+
+              <p className="mt-5 max-w-xl text-base leading-relaxed text-[#d6e4f7] md:text-lg">
+                Behind every ride, Drift247 is designed with practical systems
+                that support secure payments, clear records, responsible access,
+                and better accountability.
               </p>
             </div>
 
-            {/* Security feature pills */}
-            <div className="grid grid-cols-2 gap-3">
-              {securityFeatures.map((feature) => (
+            <div className="grid gap-3 sm:grid-cols-2">
+              {trustFeatures.map((feature) => (
                 <div
                   key={feature}
-                  className="flex items-center gap-2 text-white text-sm"
+                  className="trust-point flex items-start gap-3 rounded-2xl border border-white/10 bg-white/[0.07] p-4 text-sm text-white backdrop-blur-sm"
                 >
-                  <CheckCircle2 className="w-4 h-4 text-[#b1c1cc] shrink-0" strokeWidth={2} />
-                  <span>{feature}</span>
+                  <CheckCircle2
+                    className="mt-0.5 h-4 w-4 shrink-0 text-[#d6e4f7]"
+                    strokeWidth={2}
+                  />
+                  <span className="leading-relaxed">{feature}</span>
                 </div>
               ))}
             </div>
 
-            {/* Closing statement */}
-            <div className="pt-6 border-t border-white/10">
-              <p className="text-white/60 text-sm italic">
-                &quot;Security isn&apos;t a feature. It&apos;s our foundation.&quot;
+            <div className="border-t border-white/10 pt-6">
+              <p className="text-sm italic leading-relaxed text-white/65 md:text-base">
+                “A better ride experience starts with trust.”
               </p>
             </div>
           </div>
 
-          {/* ── Right: Shield Panel ── */}
-          <div className="security-right flex justify-center lg:justify-end">
+          {/* Right Visual Panel */}
+          <div className="trust-right flex justify-center lg:justify-end">
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0, scale: 0.96 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.7, ease: "easeOut" }}
-              className="relative w-full max-w-sm aspect-square rounded-2xl bg-[#1a3464] border border-white/10 flex items-center justify-center overflow-hidden"
+              transition={{ duration: 0.75, ease: "easeOut" }}
+              className="relative w-full max-w-md overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.08] p-6 shadow-2xl shadow-[#0f1c2e]/25 backdrop-blur-md md:p-7"
             >
-              {/* Background rings */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-72 h-72 rounded-full border border-white/5" />
-              </div>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-52 h-52 rounded-full border border-white/8" />
-              </div>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-36 h-36 rounded-full border border-white/10" />
+              <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-[#d6e4f7]/20 blur-3xl" />
+              <div className="pointer-events-none absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-white/[0.08] blur-3xl" />
+
+              {/* Top status card */}
+              <div className="relative rounded-[1.5rem] border border-white/10 bg-[#1a3464]/80 p-5">
+                <div className="mb-6 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-[#22437d]">
+                      <LockKeyhole className="h-5 w-5" strokeWidth={2} />
+                    </div>
+
+                    <div>
+                      <p className="text-sm font-bold text-white">
+                        Drift247 Trust Layer
+                      </p>
+                      <p className="text-xs text-white/55">
+                        Designed for clearer, more dependable rides
+                      </p>
+                    </div>
+                  </div>
+
+                  <span className="flex h-2.5 w-2.5 rounded-full bg-[#d6e4f7]" />
+                </div>
+
+                <div className="grid gap-3">
+                  {trustLayers.map(({ icon: Icon, title, desc }) => (
+                    <div
+                      key={title}
+                      className="trust-layer-card rounded-2xl border border-white/10 bg-white/[0.07] p-4"
+                    >
+                      <div className="flex gap-3">
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/[0.12]">
+                          <Icon
+                            className="h-4 w-4 text-[#d6e4f7]"
+                            strokeWidth={2}
+                          />
+                        </div>
+
+                        <div>
+                          <p className="text-sm font-bold text-white">{title}</p>
+                          <p className="mt-1 text-xs leading-relaxed text-white/60">
+                            {desc}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
 
-              {/* Shield SVG */}
-              <div className="relative z-10 flex flex-col items-center gap-4">
-                <svg
-                  width="96"
-                  height="96"
-                  viewBox="0 0 96 96"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M48 8 L80 20 L80 48 C80 64 64 78 48 88 C32 78 16 64 16 48 L16 20 Z"
-                    fill="none"
-                    stroke="white"
-                    strokeWidth="2.5"
-                    strokeOpacity="0.3"
-                  />
-                  <path
-                    d="M48 16 L72 26 L72 48 C72 60 60 72 48 80 C36 72 24 60 24 48 L24 26 Z"
-                    fill="none"
-                    stroke="white"
-                    strokeWidth="2"
-                    strokeOpacity="0.5"
-                  />
-                  <path
-                    d="M48 24 L66 32 L66 48 C66 57 57 66 48 72 C39 66 30 57 30 48 L30 32 Z"
-                    fill="white"
-                    fillOpacity="0.08"
-                    stroke="white"
-                    strokeWidth="1.5"
-                    strokeOpacity="0.7"
-                  />
-                  {/* Lock icon inside shield */}
-                  <rect x="41" y="45" width="14" height="11" rx="2" fill="white" fillOpacity="0.8" />
-                  <path d="M43 45 L43 41 C43 38.2 45.2 36 48 36 C50.8 36 53 38.2 53 41 L53 45" stroke="white" strokeWidth="2" strokeOpacity="0.8" fill="none" />
-                  <circle cx="48" cy="51" r="1.5" fill="#22437d" />
-                </svg>
+              {/* Bottom mini panel */}
+              <div className="relative mt-4 grid gap-4 rounded-[1.5rem] border border-white/10 bg-white/[0.07] p-5 sm:grid-cols-[auto_1fr]">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#d6e4f7] text-[#22437d]">
+                  <Activity className="h-5 w-5" strokeWidth={2} />
+                </div>
 
-                <span className="text-white/60 text-xs font-medium tracking-widest uppercase">
-                  Protected
-                </span>
+                <div>
+                  <p className="text-sm font-bold text-white">
+                    Built for accountability
+                  </p>
+                  <p className="mt-1 text-xs leading-relaxed text-white/60">
+                    Practical systems for ride visibility, earnings clarity, and
+                    better issue handling as the platform grows.
+                  </p>
+                </div>
               </div>
-
-              {/* Corner accent */}
-              <div className="absolute top-4 right-4 w-2 h-2 rounded-full bg-green-400 animate-pulse" />
             </motion.div>
           </div>
-
         </div>
       </div>
     </section>

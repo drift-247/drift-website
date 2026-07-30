@@ -16,36 +16,37 @@ export interface MetaProps {
 
 export const getMetadata = (props: MetaProps = {}) => {
   const {
-    title = "Drift247 - Secure Ride Marketplace for Riders & Drivers",
-    description = "Drift247 is a secure ride marketplace connecting riders and drivers through wallet-protected payments and transparent trip management. Launching soon in Lagos, Abuja, and Port Harcourt.",
+    title = "Drift247 - Customer-First Mobility Built for Nigeria",
+    description = "Drift247 is a customer-first mobility platform built for Nigeria, designed for comfortable rides, clearer trips, verified drivers, and dependable everyday movement. Launching soon in select Nigerian cities.",
     keywords = [
-      "ride marketplace",
-      "secure rides",
-      "ride-hailing",
-      "driver earnings",
-      "transparent payments",
-      "wallet protection",
+      "Drift247",
+      "ride-hailing Nigeria",
+      "mobility platform Nigeria",
+      "customer-first mobility",
+      "comfortable rides",
+      "reliable rides",
       "verified drivers",
+      "clear pricing",
+      "driver onboarding Nigeria",
       "Lagos rides",
       "Abuja rides",
       "Port Harcourt rides",
-      "Nigeria rideshare",
-      "safe transportation",
+      "Nigeria ride app",
+      "everyday movement Nigeria",
     ],
-    image = "https://drift247.com/og-image.png",
-    url = "https://drift247.com",
+    image = "https://drift247.africa/og-image.png",
+    url = "https://drift247.africa",
     type = "website",
-    twitterHandle = "@Drift247",
+    twitterHandle = "@Drift247_ng",
     noIndex = false,
   } = props;
 
-  // Format the title
   const fullTitle = title;
 
   return {
     title: fullTitle,
     description,
-    keywords: keywords?.join(", "),
+    keywords: keywords.join(", "),
 
     // OpenGraph
     openGraph: {
@@ -59,7 +60,7 @@ export const getMetadata = (props: MetaProps = {}) => {
           url: image,
           width: 1200,
           height: 630,
-          alt: fullTitle,
+          alt: "Drift247 - Drift in Comfort",
           type: "image/png",
         },
       ],

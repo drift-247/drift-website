@@ -18,33 +18,44 @@ export const Route = createRootRoute({
       { name: "viewport", content: "width=device-width, initial-scale=1" },
 
       // ── Primary SEO ──
-      { title: "Drift247 — Secure Ride Marketplace for Riders & Drivers" },
+      {
+        title:
+          "Drift247 - Drift in Comfort | Customer-First Mobility in Nigeria",
+      },
       {
         name: "description",
         content:
-          "Drift247 is a secure ride marketplace connecting riders and drivers through wallet-protected payments, verified identities, and transparent trip management. Launching in Nigeria.",
+          "Drift247 is a customer-first mobility platform built for Nigeria, designed for comfortable rides, clearer trips, verified drivers, and dependable everyday movement. Launching soon in select Nigerian cities.",
       },
       {
         name: "keywords",
         content:
-          "ride hailing Nigeria, secure rides Lagos, Drift247, ride marketplace, driver earnings Nigeria, safe rides Abuja, Port Harcourt rides",
+          "Drift247, ride hailing Nigeria, mobility platform Nigeria, customer-first mobility, comfortable rides, reliable rides, verified drivers, clear pricing, driver onboarding Nigeria, Lagos rides, Abuja rides, Port Harcourt rides, Nigeria ride app, everyday movement Nigeria",
       },
       { name: "robots", content: "index, follow" },
       { name: "author", content: "Driving Africa Digital Services Ltd" },
+      { name: "theme-color", content: "#22437d" },
 
       // ── Open Graph ──
       {
         property: "og:title",
-        content: "Drift247 — Secure Ride Marketplace for Riders & Drivers",
+        content:
+          "Drift247 — Drift in Comfort | Customer-First Mobility in Nigeria",
       },
       {
         property: "og:description",
         content:
-          "Wallet-protected payments. Verified identities. Transparent trips. Drift247 is built for trust from the ground up.",
+          "Comfortable rides, clearer trips, verified drivers, and dependable everyday movement. Drift247 is preparing to launch across select Nigerian cities.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://drift247.africa" },
       { property: "og:image", content: "https://drift247.africa/og-image.png" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      {
+        property: "og:image:alt",
+        content: "Drift247 — Drift in Comfort",
+      },
       { property: "og:site_name", content: "Drift247" },
       { property: "og:locale", content: "en_NG" },
 
@@ -52,15 +63,17 @@ export const Route = createRootRoute({
       { name: "twitter:card", content: "summary_large_image" },
       {
         name: "twitter:title",
-        content: "Drift247 - Secure Ride Marketplace",
+        content: "Drift247 — Drift in Comfort",
       },
       {
         name: "twitter:description",
         content:
-          "Secure payments. Verified identities. Transparent trips — built for trust from the ground up.",
+          "A customer-first mobility platform built for Nigeria, designed for comfortable rides, clearer trips, and dependable everyday movement.",
       },
       { name: "twitter:image", content: "https://drift247.africa/og-image.png" },
+      { name: "twitter:image:alt", content: "Drift247 — Drift in Comfort" },
       { name: "twitter:creator", content: "@drift247" },
+      { name: "twitter:site", content: "@drift247" },
     ],
     links: [
       { rel: "icon", href: "/logo-icon.svg", type: "image/svg+xml" },
@@ -83,13 +96,18 @@ export const Route = createRootRoute({
   component: RootComponent,
 
   notFoundComponent: () => (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-white">
+    <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-white px-6 text-center">
       <img src="/logo-icon.svg" alt="Drift247" className="mb-4 h-12 w-auto" />
+
       <h1 className="text-5xl font-bold text-[#0f1c2e]">404</h1>
-      <p className="text-base text-[#4a5568]">Page not found</p>
+
+      <p className="max-w-sm text-base leading-relaxed text-[#4a5568]">
+        This page could not be found.
+      </p>
+
       <Link
         to="/"
-        className="mt-2 rounded-xl bg-[#22437d] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#1a3464]"
+        className="mt-2 rounded-xl bg-[#22437d] px-6 py-3 text-sm font-semibold text-white shadow-md shadow-[#22437d]/20 transition-colors hover:bg-[#1a3464]"
       >
         Go home
       </Link>
@@ -111,6 +129,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
       <head>
         <HeadContent />
       </head>
+
       <body
         className="min-h-screen bg-white antialiased"
         style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}

@@ -10,7 +10,8 @@
     "deploy": "vercel deploy --prebuilt",
     "deploy:prod": "vercel deploy --prod --prebuilt",
     "lint": "eslint . --max-warnings 0",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noEmit",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@base-ui/react": "^1.2.0",
