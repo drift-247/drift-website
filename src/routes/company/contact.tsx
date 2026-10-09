@@ -112,7 +112,7 @@ function Contact() {
                 <MapPin className="w-4 h-4 text-[#22437d] shrink-0 mt-0.5" />
                 <div>
                   <p className="text-xs font-semibold text-[#4a5568] uppercase tracking-wide mb-0.5">Address</p>
-                  <p className="text-[#0f1c2e] text-sm font-medium">Abibattu Amoke Bello Close,<br />Lekki-Ajah, Lagos, Nigeria</p>
+                  <p className="text-[#0f1c2e] text-sm font-medium">Regus - The Zone, Plot 9,<br />Gbagada Industrial Scheme, Gbagada, Lagos, Nigeria.</p>
                 </div>
               </div>
             </div>
